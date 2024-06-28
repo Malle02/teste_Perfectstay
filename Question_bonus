@@ -1,0 +1,55 @@
+Technologies Front-end et Hébergemen:
+
+Pour un site web de ce type, je pense q'utiliser React pour le front-end et MySQL pour la base de données serais une bonne idée. 
+
+Front-end avec React : Utilisez React avec des bibliothèques comme Redux pour gérer l'état global de l'application et React Router pour la navigation.
+
+Base de Données MySQL ou SQL : MySQL est une option robuste pour la gestion de données relationnelles. Assurez-vous d'optimiser votre schéma de base de données pour la performance et l'évolutivité.
+
+Hébergement : Google Cloud Platform, ou Azure ou encre des services comme EC2 (AWS), Compute Engine (Google Cloud) pour le déploiement de votre application React et RDS (AWS), Cloud SQL (Google Cloud) pour votre base de données MySQL.
+
+ Modélisation de Base de Données :
+ 
+ CREATE TABLE Utilisateur (
+    id VARCHAR(36) PRIMARY KEY,
+    nom VARCHAR(100) NOT NULL,
+    balance DECIMAL(10, 2) DEFAULT 0.0
+);
+ CREATE TABLE Article (
+    id VARCHAR(36) PRIMARY KEY,
+    nom VARCHAR(100) NOT NULL,
+    prix DECIMAL(10, 2) NOT NULL,
+    quantite INTEGER NOT NULL
+);
+ CREATE TABLE Transaction (
+    id VARCHAR(36) PRIMARY KEY,
+    utilisateur_id VARCHAR(36),
+    montant DECIMAL(10, 2) NOT NULL,
+    date_transaction TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (utilisateur_id) REFERENCES Utilisateur(id)
+);
+
+Table supplementaire =>  pour la gestion des quantités =>  
+CREATE TABLE ArticlePanier (
+    panier_id VARCHAR(36),
+    article_id VARCHAR(36),
+    quantite INTEGER NOT NULL,
+    PRIMARY KEY (panier_id, article_id),
+    FOREIGN KEY (panier_id) REFERENCES Panier(id),
+    FOREIGN KEY (article_id) REFERENCES Article(id)
+);
+
+
+Utilisateur : Stocke les informations sur les utilisateurs du système, avec un identifiant unique (id),
+un nom et le solde de leur porte-monnaie (balance).
+
+Article : Contient les détails sur les articles disponibles à l'achat, 
+avec un identifiant unique (id), un nom, un prix unitaire (prix) et la quantité disponible (quantite).
+
+Transaction : Enregistre chaque transaction effectuée par un utilisateur, avec un identifiant unique (id), 
+l'identifiant de l'utilisateur concerné (utilisateur_id), le montant total de la transaction (montant) et la date et l'heure de la transaction (date_transaction). 
+La clé étrangère utilisateur_id référence l'identifiant de l'utilisateur dans la table Utilisateur.
+
+ArticlePanier : Cette table permet de gérer les articles présents dans le panier d'un utilisateur. Elle contient l'identifiant du panier (panier_id), 
+l'identifiant de l'article (article_id), la quantité de cet article dans le panier (quantite). Les clés étrangères panier_id et article_id référencent respectivement les tables Panier et Article.
+
